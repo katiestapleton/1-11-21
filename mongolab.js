@@ -1,22 +1,19 @@
-/*
-    ### Assignment for Today 01/11 (due at midnight tonight)
+//Author: Katie Stapleton, SKC student
 
-[U2 Lab 2: Exploring a MongoDB database](https://skilledkc.valor.training/mod/assign/view.php?id=11657)
+//[U2 Lab 2: Exploring a MongoDB database](https://skilledkc.valor.training/mod/assign/view.php?id=11657)
 
-In this assignment, we'll create a recipe database - this time in Mongo instead of SQL.  Please follow these instructions instead of the instructions listed in the assignment:
-
-1. This lab is going to be relatively simple, since this is all new. We're going to create a recipe ingredients database with Mongoose similar to the SQL database from before.
-
-7. Comment the code and clearly explain what the script is doing.
-8. Put your  commands in a file in a Github repo and submit the repo link to Lab 2
+/* INSTRUCTION ISSUE: 2. Create the mongoose schema and model
+ * Note: I watched all videos over the last 2 days that contained any Mongo teachings.
+ * However, I couldn't find anything about creating a Mongoose schema. 
+ *I think it was supposed to be covered 1/12 afternoon, but we never got around to it.$set
 */
 
 
-//2. Create the mongoose schema and model
 
 //7. Insert 3 new recipes and their ingredients, amounts, and measures in to the Database
 // array storing all recipes and related information. creates collection for each recipe
-[ 
+// (CRUD: create)
+const recipeArr = [ 
     {
         "recipeName": "Fruit Loops Shake",
         "recipeDesc": "Vanilla shake with Fruit Loops Cereal",
@@ -24,7 +21,7 @@ In this assignment, we'll create a recipe database - this time in Mongo instead 
         // array needed to store all ingredients for given recipe in one collection
         "ingredients": [
             {
-                "ingredientName": "Soften vanilla ice ceam",
+                "ingredientName": "soft vanilla ice ceam",
                 "measurement": "cups",
                 "quantity": "3"
             },
@@ -48,7 +45,7 @@ In this assignment, we'll create a recipe database - this time in Mongo instead 
                 "quantity": "1"
             },
             {
-                "ingredientName": "hard vanilla ice cream",
+                "ingredientName": "ice cream",
                 "measurement": "scoop",
                 "quantity": "2"
             },
@@ -61,8 +58,8 @@ In this assignment, we'll create a recipe database - this time in Mongo instead 
     },
 
     {
-        "recipeName": "Fudge Sunday",
-        "recipeDesc": "Chocolate ice cream topped with hot fudge",
+        "recipeName": "Hot Fudge Sunday",
+        "recipeDesc": "ice cream topped with hot fudge",
         "instructions": "Heat up fudge in microwave. Place ice cream into bowl. Place fudge on top of ice cream",
         // array needed to store all ingredients for given recipe in one collection
         "ingredients": [
@@ -72,28 +69,30 @@ In this assignment, we'll create a recipe database - this time in Mongo instead 
                 "quantity": "2"
             },
             {
-                "ingredientName": "chocolate ice cream",
+                "ingredientName": "ice cream",
                 "measurement": "scoop",
                 "quantity": "3"
             }
         ] 
     }
 
-]
-
-// produce list of all recipes
+];
 
 
-// find recipes that use a specific ingredient
+// produce list of all recipes (CRUD: read)
+db.recipes.find();
 
+// find recipes that use a specific ingredient (CRUD: read)
+db.recipes.find({"ingredients.ingredientName": "ice cream"});
 
-// update stored recipe
-
-
-
-/*
-8. Write a query to get a list of all the Recipes
-9. Write a query to get a list of Recipes that use a certain Ingredient
-10. Write a query to update a recipe you added
-*/
-//db.collection.find
+// update stored recipe (CRUD: update)
+// I pulled this off of stack overflow and partially from mongo's official manual
+db.recipes.updateOne(
+    {    
+        recipeName: "Hot Fudge Sunday",
+        "ingredients.ingredientName": "fudge syrup"
+    },
+    {
+        $set: {"ingredients.$.ingredientName": "fudge topping"}
+    }
+);
